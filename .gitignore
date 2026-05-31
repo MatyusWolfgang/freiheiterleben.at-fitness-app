@@ -1,0 +1,19 @@
+# Dependencies
+/vendor/
+
+# Composer
+composer.phar
+
+# Environment / Secrets
+.env
+
+# Logs
+*.log
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Docker artifacts (optional)
+*.pid

@@ -1,29 +1,33 @@
 <?php
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../api/controllers/ExerciseController.php';
 
 header('Content-Type: application/json');
 
-try {
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
-    $db = Database::getConnection();
+/**
+ * Minimal Router
+ */
+if ($uri === '/api/exercises') {
 
-    $result = $db->query("SELECT NOW()");
+    $controller = new ExerciseController();
 
-    $time = $result->fetchColumn();
+    if ($method === 'GET') {
+        $controller->getAll();
+        exit;
+    }
 
-    echo json_encode([
-        "status" => "ok",
-        "database" => "connected",
-        "time" => $time
-    ]);
+    if ($method === 'POST') {
+        $controller->create();
+        exit;
+    }
 
-} catch(Exception $e) {
-
-    http_response_code(500);
-
-    echo json_encode([
-        "status" => "error",
-        "message" => $e->getMessage()
-    ]);
+    http_response_code(405);
+    echo json_encode(["error" => "Method not allowed"]);
+    exit;
 }
+
+http_response_code(404);
+echo json_encode(["error" => "Not found"]);
