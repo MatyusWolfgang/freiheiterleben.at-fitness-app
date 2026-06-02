@@ -1,8 +1,9 @@
 <?php
 
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/ExerciseRepositoryInterface.php';
 
-class ExerciseRepository
+class ExerciseRepository implements ExerciseRepositoryInterface
 {
     private PDO $db;
 

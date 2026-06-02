@@ -4,11 +4,13 @@ require_once __DIR__ . '/../repositories/ExerciseRepository.php';
 
 class ExerciseService
 {
-    private ExerciseRepository $repository;
+    private ExerciseRepositoryInterface $repository;
 
-    public function __construct()
-    {
-        $this->repository = new ExerciseRepository();
+    public function __construct(
+        ?ExerciseRepositoryInterface $repository = null
+    ) {
+        $this->repository =
+            $repository ?? new ExerciseRepository();
     }
 
     /**
