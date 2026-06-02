@@ -8,6 +8,21 @@ header('Content-Type: application/json');
 
 $router = new Router();
 
+$pipeline = new MiddlewarePipeline();
+
+$pipeline->add(new RequestIdMiddleware());
+$pipeline->add(new LoggingMiddleware());
+$pipeline->add(new AuthMiddleware());
+
+$request = [
+    'method' => $_SERVER['REQUEST_METHOD'],
+    'uri' => $_SERVER['REQUEST_URI'],
+];
+
+$pipeline->handle($request, function ($request) use ($router) {
+    $router->dispatch($request['method'], $request['uri']);
+});
+
 $exerciseController = new ExerciseController();
 
 $router->get('/api/exercises', function () use ($exerciseController) {
