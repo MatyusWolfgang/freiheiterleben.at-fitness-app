@@ -1,33 +1,25 @@
 <?php
 
+require_once __DIR__ . '/../src/http/Router.php';
 require_once __DIR__ . '/../api/controllers/ExerciseController.php';
+require_once __DIR__ . '/../src/http/Response.php';
 
 header('Content-Type: application/json');
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'];
+$router = new Router();
 
-/**
- * Minimal Router
- */
-if ($uri === '/api/exercises') {
+$exerciseController = new ExerciseController();
 
-    $controller = new ExerciseController();
+$router->get('/api/exercises', function () use ($exerciseController) {
+    $exerciseController->getAll();
+});
 
-    if ($method === 'GET') {
-        $controller->getAll();
-        exit;
-    }
+$router->post('/api/exercises', function () use ($exerciseController) {
+    $exerciseController->create();
+});
 
-    if ($method === 'POST') {
-        $controller->create();
-        exit;
-    }
+$router->get('/api/exercises/{id}', function ($params) use ($exerciseController) {
+    $exerciseController->getById((int)$params[0]);
+});
 
-    http_response_code(405);
-    echo json_encode(["error" => "Method not allowed"]);
-    exit;
-}
-
-http_response_code(404);
-echo json_encode(["error" => "Not found"]);
+$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

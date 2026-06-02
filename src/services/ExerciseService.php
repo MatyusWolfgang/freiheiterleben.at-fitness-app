@@ -19,6 +19,11 @@ class ExerciseService
         return $this->repository->findAll();
     }
 
+    public function getExerciseById(int $id): ?array
+    {
+        return $this->repository->findById($id);
+    }
+
     /**
      * Erstellt eine neue Übung
      */

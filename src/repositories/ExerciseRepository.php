@@ -30,4 +30,18 @@ class ExerciseRepository
             'factor' => $factor
         ]);
     }
+
+    public function findById(int $id): ?array
+    {
+        $stmt = $this->db->prepare("
+            SELECT * FROM exercises WHERE id = :id
+        ");
+
+        $stmt->execute(['id' => $id]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
 }
