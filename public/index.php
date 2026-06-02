@@ -1,10 +1,13 @@
 <?php
 
 require_once __DIR__ . '/../src/http/Router.php';
-require_once __DIR__ . '/../api/controllers/ExerciseController.php';
 require_once __DIR__ . '/../src/http/Response.php';
+require_once __DIR__ . '/../api/controllers/ExerciseController.php';
+require_once __DIR__ . '/../api/controllers/WorkoutController.php';
 
 header('Content-Type: application/json');
+
+$workoutController = new WorkoutController();
 
 $router = new Router();
 
@@ -49,4 +52,24 @@ $router->put('/api/exercises/{id}', function ($params) use ($exerciseController)
 
 $router->delete('/api/exercises/{id}', function ($params) use ($exerciseController) {
     $exerciseController->delete((int)$params[0]);
+});
+
+$router->get('/api/workouts', function () use ($workoutController) {
+    $workoutController->getAll();
+});
+
+$router->get('/api/workouts/{id}', function ($params) use ($workoutController) {
+    $workoutController->getById((int)$params[0]);
+});
+
+$router->post('/api/workouts', function () use ($workoutController) {
+    $workoutController->create();
+});
+
+$router->put('/api/workouts/{id}', function ($params) use ($workoutController) {
+    $workoutController->update((int)$params[0]);
+});
+
+$router->delete('/api/workouts/{id}', function ($params) use ($workoutController) {
+    $workoutController->delete((int)$params[0]);
 });
