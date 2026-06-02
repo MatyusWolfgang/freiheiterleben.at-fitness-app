@@ -51,7 +51,16 @@ class Router
             'error' => 'Route not found'
         ]);
     }
+    
+    public function put(string $path, callable $handler): void
+    {
+        $this->add('PUT', $path, $handler);
+    }
 
+    public function delete(string $path, callable $handler): void
+    {
+        $this->add('DELETE', $path, $handler);
+    }
     private function convertPathToRegex(string $path): string
     {
         // /api/exercises/{id} → regex
