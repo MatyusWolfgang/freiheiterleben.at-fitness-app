@@ -20,3 +20,6 @@ CREATE TABLE IF NOT EXISTS exercises (
     type VARCHAR(20) NOT NULL,
     calories_factor NUMERIC(10,2) NOT NULL DEFAULT 1.0
 );
+
+DOCKER:
+
