@@ -74,13 +74,5 @@ class ExerciseController
         }
     }
 
-    public function updateExercise(int $id, array $data): bool
-    {
-        return $this->repository->update($id, $data);
-    }
-
-    public function deleteExercise(int $id): bool
-    {
-        return $this->repository->delete($id);
-    }
+    
 }
