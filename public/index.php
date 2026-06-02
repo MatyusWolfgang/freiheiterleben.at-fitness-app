@@ -23,3 +23,15 @@ $router->get('/api/exercises/{id}', function ($params) use ($exerciseController)
 });
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+
+$router->get('/api/exercises/{id}', function ($params) use ($exerciseController) {
+    $exerciseController->getById((int)$params[0]);
+});
+
+$router->put('/api/exercises/{id}', function ($params) use ($exerciseController) {
+    $exerciseController->update((int)$params[0]);
+});
+
+$router->delete('/api/exercises/{id}', function ($params) use ($exerciseController) {
+    $exerciseController->delete((int)$params[0]);
+});

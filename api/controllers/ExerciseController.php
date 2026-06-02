@@ -55,4 +55,32 @@ class ExerciseController
             );
         }
     }
+
+    public function update(int $id): void
+    {
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        try {
+            $updated = $this->service->updateExercise($id, $input);
+
+            if (!$updated) {
+                Response::error("Exercise not found", 404);
+            }
+
+            Response::success(["message" => "Exercise updated"]);
+
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 400);
+        }
+    }
+
+    public function updateExercise(int $id, array $data): bool
+    {
+        return $this->repository->update($id, $data);
+    }
+
+    public function deleteExercise(int $id): bool
+    {
+        return $this->repository->delete($id);
+    }
 }
