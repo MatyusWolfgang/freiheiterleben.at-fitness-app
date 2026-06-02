@@ -30,4 +30,45 @@ class ExerciseRepository
             'factor' => $factor
         ]);
     }
+
+    public function findById(int $id): ?array
+    {
+        $stmt = $this->db->prepare("
+            SELECT * FROM exercises WHERE id = :id
+        ");
+
+        $stmt->execute(['id' => $id]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $stmt = $this->db->prepare("
+            UPDATE exercises
+            SET name = :name,
+                type = :type,
+                calories_factor = :factor
+            WHERE id = :id
+        ");
+
+        return $stmt->execute([
+            'id' => $id,
+            'name' => $data['name'],
+            'type' => $data['type'],
+            'factor' => $data['calories_factor']
+        ]);
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare("
+            DELETE FROM exercises WHERE id = :id
+        ");
+
+        return $stmt->execute(['id' => $id]);
+    }
+
 }

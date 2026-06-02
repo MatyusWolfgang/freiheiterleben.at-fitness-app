@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../src/services/ExerciseService.php';
+require_once __DIR__ . '/../../src/http/Response.php';
 
 class ExerciseController
 {
@@ -13,9 +14,25 @@ class ExerciseController
 
     public function getAll(): void
     {
-        echo json_encode(
-            $this->service->getAllExercises()
-        );
+        $data = $this->service->getAllExercises();
+
+        Response::success($data);
+    }
+
+    public function getById(int $id): void
+    {
+        try {
+            $data = $this->service->getExerciseById($id);
+
+            if (!$data) {
+                Response::error("Exercise not found", 404);
+            }
+
+            Response::success($data);
+
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 500);
+        }
     }
 
     public function create(): void
@@ -25,17 +42,37 @@ class ExerciseController
         try {
             $this->service->createExercise($input);
 
-            echo json_encode([
-                "status" => "created"
-            ]);
+            Response::success(
+                ["message" => "Exercise created"],
+                201
+            );
 
         } catch (Exception $e) {
 
-            http_response_code(400);
-
-            echo json_encode([
-                "error" => $e->getMessage()
-            ]);
+            Response::error(
+                $e->getMessage(),
+                400
+            );
         }
     }
+
+    public function update(int $id): void
+    {
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        try {
+            $updated = $this->service->updateExercise($id, $input);
+
+            if (!$updated) {
+                Response::error("Exercise not found", 404);
+            }
+
+            Response::success(["message" => "Exercise updated"]);
+
+        } catch (Exception $e) {
+            Response::error($e->getMessage(), 400);
+        }
+    }
+
+    
 }

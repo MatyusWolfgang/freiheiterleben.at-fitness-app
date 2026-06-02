@@ -19,6 +19,11 @@ class ExerciseService
         return $this->repository->findAll();
     }
 
+    public function getExerciseById(int $id): ?array
+    {
+        return $this->repository->findById($id);
+    }
+
     /**
      * Erstellt eine neue Übung
      */
@@ -43,4 +48,15 @@ class ExerciseService
             (float)$data['calories_factor']
         );
     }
+
+    public function updateExercise(int $id, array $data): bool
+    {
+        return $this->repository->update($id, $data);
+    }
+
+    public function deleteExercise(int $id): bool
+    {
+        return $this->repository->delete($id);
+    }
+    
 }
