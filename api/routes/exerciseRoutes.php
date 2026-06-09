@@ -1,5 +1,7 @@
 <?php
 
+global $router;
+
 $router->get(
     '/api/exercises',
     fn() => $exerciseController->getAll()

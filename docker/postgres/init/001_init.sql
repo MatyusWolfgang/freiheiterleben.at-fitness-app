@@ -1,3 +1,15 @@
+CREATE TABLE exercises (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    type VARCHAR(50),
+    factor NUMERIC
+);
+
+CREATE TABLE workouts (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE workout_exercises (
     id SERIAL PRIMARY KEY,
     workout_id INTEGER NOT NULL,

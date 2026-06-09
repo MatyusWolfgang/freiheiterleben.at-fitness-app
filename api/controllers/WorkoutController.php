@@ -14,7 +14,7 @@ class WorkoutController
     }
 
     public function getAll(): void
-    {
+    {   
         Response::success($this->service->getAll());
     }
 

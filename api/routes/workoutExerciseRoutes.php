@@ -1,5 +1,7 @@
 <?php
 
+global $router;
+
 $router->post(
     '/api/workouts/{id}/exercises',
     function ($params) use ($workoutExerciseController) {
@@ -9,3 +11,4 @@ $router->post(
         );
     }
 );
+

@@ -11,6 +11,27 @@ class WorkoutExerciseRepository
         $this->db = Database::getConnection();
     }
 
+    public function findByWorkoutId(int $workoutId): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT 
+                e.id,
+                e.name,
+                we.sets,
+                we.reps,
+                we.duration_seconds
+            FROM workout_exercises we
+            JOIN exercises e ON e.id = we.exercise_id
+            WHERE we.workout_id = :workout_id
+        ");
+
+        $stmt->execute([
+            'workout_id' => $workoutId
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create(array $data): void
     {
         $stmt = $this->db->prepare("
